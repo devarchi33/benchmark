@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Created by donghoon on 2016. 8. 16..
  */
 @Component
-public class AsyncTask {
+public class AsyncTask implements Runnable {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -23,7 +23,8 @@ public class AsyncTask {
     private JedisService jedisService;
 
     @Async
-    public void doAsyncTask() {
+    @Override
+    public void run() {
         User user = userService.findUserByEmail("user1@gmail.com");
         logger.info("UserInfo - email: {}", user.getEmail());
 
@@ -31,4 +32,5 @@ public class AsyncTask {
         String emailFromRedis = jedisService.getLog("email1");
         logger.info("Redis Email: {}", emailFromRedis);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.iruen;
 
+import com.iruen.executor.AsyncCubeoneBenchmarkTask;
 import com.iruen.executor.AsyncTask;
 import com.iruen.executor.CubeoneBenchmarkAsyncUncaughtExceptionHandler;
 import org.slf4j.Logger;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.StopWatch;
 
 import java.util.concurrent.Executor;
 
@@ -20,7 +23,12 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private StopWatch stopWatch;
+
+    @Autowired
     private AsyncTask asyncTask;
+    @Autowired
+    private AsyncCubeoneBenchmarkTask cubeoneTask;
 
     public static void main(String[] args) {
         SpringApplication.run(CubeoneBenchmarkApplication.class, args);
@@ -28,15 +36,26 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
 
     @Override
     public void run(String... strings) throws Exception {
-        asyncTask.doAsyncTask();
+        Executor executor = getAsyncExecutor();
+
+        stopWatch.start();
+//        for (int i = 0; i < 20; i++) {
+//            executor.execute(asyncTask);
+//            asyncTask.run();
+//        }
+        executor.execute(cubeoneTask);
+        stopWatch.stop();
+
+        logger.info("Benchmark Time : {} mils.", stopWatch.getTotalTimeMillis());
+
     }
 
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(20);
-        executor.setQueueCapacity(20);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(10);
         executor.initialize();
         return executor;
     }
@@ -44,5 +63,10 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new CubeoneBenchmarkAsyncUncaughtExceptionHandler();
+    }
+
+    @Bean
+    public StopWatch stopWatch() {
+        return new StopWatch();
     }
 }

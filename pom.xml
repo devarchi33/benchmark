@@ -27,6 +27,13 @@
         <mysql.driver.version>6.0.3</mysql.driver.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>mesir-repo</id>
+            <url>http://mesir.googlecode.com/svn/trunk/mavenrepo</url>
+        </repository>
+    </repositories>
+
     <dependencies>
 
         <dependency>
@@ -63,6 +70,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.driver.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0.4.0</version>
         </dependency>
 
         <!-- lombok -->

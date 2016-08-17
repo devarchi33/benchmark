@@ -61,6 +61,11 @@ public class MybatisConfig {
         this.DB_URL = dbInfo.get("url");
         this.USERNAME = dbInfo.get("username");
         this.PASSWORD = dbInfo.get("password");
+
+        logger.info("This DB_DIRVER is {}", DB_DIRVER);
+        logger.info("This DB_URL is {}", DB_URL);
+        logger.info("This USERNAME is {}", USERNAME);
+        logger.info("This PASSWORD is {}", PASSWORD);
     }
 
     private DataSource makeComboPooledDataSource(String driverClass, String dbUrl) {
@@ -76,6 +81,7 @@ public class MybatisConfig {
         datasource.setJdbcUrl(dbUrl);
         datasource.setUser(USERNAME);
         datasource.setPassword(PASSWORD);
+        datasource.setInitialPoolSize(15);
 
         return datasource;
     }
@@ -97,6 +103,7 @@ public class MybatisConfig {
 
         sessionFactory.setDataSource(comboPooledDataSource());
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/user-mapper.xml"));
+        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/cubeonetest-mapper.xml"));
 
         Class[] typeAliases = {User.class};
         sessionFactory.setTypeAliases(typeAliases);

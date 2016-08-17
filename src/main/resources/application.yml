@@ -1,15 +1,15 @@
-dbType: mysql
+dbType: oracle
 servers:
   mysql:
-    dirver: com.mysql.jdbc.Driver
+    driver: com.mysql.jdbc.Driver
     url: jdbc:mysql://iruentech.cjyn70ttjgoq.ap-northeast-2.rds.amazonaws.com:3306/test?characterEncoding=utf8
     username: iruen
     password: iruen1111
   oracle:
-    dirver:
-    url:
-    username:
-    password:
+    driver: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.0.17:1521:ORCA
+    username: test1
+    password: test1
   redis:
     host: 127.0.0.1
     port: 6379
