@@ -102,8 +102,7 @@ public class MybatisConfig {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 
         sessionFactory.setDataSource(comboPooledDataSource());
-        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/user-mapper.xml"));
-        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/cubeonetest-mapper.xml"));
+        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/*-mapper.xml"));
 
         Class[] typeAliases = {User.class};
         sessionFactory.setTypeAliases(typeAliases);

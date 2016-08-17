@@ -1,7 +1,7 @@
 dbType: oracle
 servers:
   mysql:
-    driver: com.mysql.jdbc.Driver
+    driver: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://iruentech.cjyn70ttjgoq.ap-northeast-2.rds.amazonaws.com:3306/test?characterEncoding=utf8
     username: iruen
     password: iruen1111

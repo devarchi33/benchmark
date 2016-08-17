@@ -25,12 +25,15 @@ public class AsyncTask implements Runnable {
     @Async
     @Override
     public void run() {
-        User user = userService.findUserByEmail("user1@gmail.com");
-        logger.info("UserInfo - email: {}", user.getEmail());
 
-        jedisService.sendLog("email1", user.getEmail());
-        String emailFromRedis = jedisService.getLog("email1");
-        logger.info("Redis Email: {}", emailFromRedis);
+        for (int i = 0; i < 1000; i++) {
+            User user = userService.findUserByEmail("user1@gmail.com");
+            logger.info("UserInfo - email: {}", user.getEmail());
+            jedisService.sendLog("email1", user.getEmail());
+            String emailFromRedis = jedisService.getLog("email1");
+            logger.info("Redis Email: {}", emailFromRedis);
+        }
+
     }
 
 }

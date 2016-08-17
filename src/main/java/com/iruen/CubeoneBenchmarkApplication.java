@@ -1,6 +1,6 @@
 package com.iruen;
 
-import com.iruen.executor.AsyncCubeoneBenchmarkTask;
+import com.iruen.executor.CubeoneBenchmarkTask;
 import com.iruen.executor.AsyncTask;
 import com.iruen.executor.CubeoneBenchmarkAsyncUncaughtExceptionHandler;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
     @Autowired
     private AsyncTask asyncTask;
     @Autowired
-    private AsyncCubeoneBenchmarkTask cubeoneTask;
+    private CubeoneBenchmarkTask cubeoneTask;
 
     public static void main(String[] args) {
         SpringApplication.run(CubeoneBenchmarkApplication.class, args);
@@ -36,14 +36,11 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
 
     @Override
     public void run(String... strings) throws Exception {
+
         Executor executor = getAsyncExecutor();
 
         stopWatch.start();
-//        for (int i = 0; i < 20; i++) {
-//            executor.execute(asyncTask);
-//            asyncTask.run();
-//        }
-        executor.execute(cubeoneTask);
+        cubeoneTask.run();
         stopWatch.stop();
 
         logger.info("Benchmark Time : {} mils.", stopWatch.getTotalTimeMillis());
