@@ -21,5 +21,6 @@ public class Properties {
     private String dbType;
     private Map<String, Map<String, String>> servers = new HashMap<>();
     private String env;
+    private String logPrint;
 
 }

@@ -81,7 +81,8 @@ public class MybatisConfig {
         datasource.setJdbcUrl(dbUrl);
         datasource.setUser(USERNAME);
         datasource.setPassword(PASSWORD);
-        datasource.setInitialPoolSize(15);
+        datasource.setInitialPoolSize(30);
+        datasource.setMaxPoolSize(40);
 
         return datasource;
     }

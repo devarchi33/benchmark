@@ -23,9 +23,6 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private StopWatch stopWatch;
-
-    @Autowired
     private AsyncTask asyncTask;
     @Autowired
     private CubeoneBenchmarkTask cubeoneTask;
@@ -39,11 +36,7 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner, AsyncConf
 
         Executor executor = getAsyncExecutor();
 
-        stopWatch.start();
         cubeoneTask.run();
-        stopWatch.stop();
-
-        logger.info("Benchmark Time : {} mils.", stopWatch.getTotalTimeMillis());
 
     }
 
