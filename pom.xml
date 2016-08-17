@@ -101,6 +101,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>cubeone-benchmark</finalName>
+                    <outputDirectory>/Users/donghoon/Documents/amazon/build</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
