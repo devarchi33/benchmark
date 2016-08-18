@@ -18,60 +18,45 @@ public class JedisService {
         this.jedisConfig = jedisHelper;
     }
 
-    @SuppressWarnings("Duplicates")
     public Integer sendLog(byte[] logKey, byte[] logValue) {
-        Jedis jedis = jedisConfig.getConnection();
-        long countLog = 0;
-        try {
+        long countLog;
+        try (Jedis jedis = jedisConfig.getConnection()) {
             countLog = jedis.rpush(logKey, logValue);
-            jedisConfig.returnResource(jedis);
-            return (int) countLog;
-        } catch (JedisConnectionException e) {
-            jedisConfig.returnResource(jedis);
             return (int) countLog;
         }
     }
 
-    @SuppressWarnings("Duplicates")
     public Integer sendLog(String logKey, String logValue) throws JedisConnectionException {
-        Jedis jedis = jedisConfig.getConnection();
-        long countLog = 0;
-        try {
+        long countLog;
+        try (Jedis jedis = jedisConfig.getConnection()) {
             countLog = jedis.rpush(logKey, logValue);
-            jedisConfig.returnResource(jedis);
-            return (int) countLog;
-        } catch (JedisConnectionException e) {
-            jedisConfig.returnResource(jedis);
             return (int) countLog;
         }
     }
 
-
-    //단위 Test 확인용.
     public String getLog(byte[] logKey) {
-        Jedis jedis = jedisConfig.getConnection();
-        byte[] getLog = null;
-        try {
+        byte[] getLog;
+        try (Jedis jedis = jedisConfig.getConnection()) {
             getLog = jedis.lpop(logKey);
-            jedisConfig.returnResource(jedis);
-            return getLog.toString();
-        } catch (JedisConnectionException e) {
-            jedisConfig.returnResource(jedis);
-            assert getLog != null;
             return getLog.toString();
         }
     }
 
-    public String getLog(String logKey) {
-        Jedis jedis = jedisConfig.getConnection();
-        String getLog = null;
-        try {
-            getLog = jedis.lpop(logKey);
-            jedisConfig.returnResource(jedis);
-            return getLog;
-        } catch (JedisConnectionException e) {
-            jedisConfig.returnResource(jedis);
-            return getLog;
+    public String setLog(String key, String value) {
+        try (Jedis jedis = jedisConfig.getConnection()) {
+            return jedis.set(key, value);
+        }
+    }
+
+    public String getLog(String key) {
+        try (Jedis jedis = jedisConfig.getConnection()) {
+            return jedis.get(key);
+        }
+    }
+
+    public boolean existsKey(String key) {
+        try (Jedis jedis = jedisConfig.getConnection()) {
+            return jedis.exists(key);
         }
     }
 }

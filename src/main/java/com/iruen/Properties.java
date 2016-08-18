@@ -22,5 +22,6 @@ public class Properties {
     private Map<String, Map<String, String>> servers = new HashMap<>();
     private String env;
     private String logPrint;
+    private String workerCnt;
 
 }

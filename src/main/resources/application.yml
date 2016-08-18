@@ -1,5 +1,6 @@
 dbType: oracle
-logPrint: false
+logPrint: true
+workerCnt: 1
 servers:
   mysql:
     driver: com.mysql.cj.jdbc.Driver
@@ -12,7 +13,7 @@ servers:
     username: test1
     password: test1
   redis:
-    host: 127.0.0.1
+    host: 192.168.0.17
     port: 6379
     max: 20
     timeout: 3000

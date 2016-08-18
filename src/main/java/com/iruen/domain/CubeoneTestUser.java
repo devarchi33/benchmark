@@ -8,7 +8,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Data
 @Alias("test")
-public class CubeoneTest {
+public class CubeoneTestUser {
 
     private String name;
     private String jumin;

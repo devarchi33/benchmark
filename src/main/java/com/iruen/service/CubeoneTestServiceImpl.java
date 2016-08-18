@@ -1,7 +1,7 @@
 package com.iruen.service;
 
 import com.iruen.dao.CubeoneTestDao;
-import com.iruen.domain.CubeoneTest;
+import com.iruen.domain.CubeoneTestUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class CubeoneTestServiceImpl implements CubeoneTestService {
     private CubeoneTestDao cubeoneTestDao;
 
     @Override
-    public List<CubeoneTest> findAllUsers() {
+    public List<CubeoneTestUser> findAllUsers() {
         return cubeoneTestDao.findAllUsers();
     }
 }

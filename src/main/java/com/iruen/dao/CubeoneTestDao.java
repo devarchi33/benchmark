@@ -1,6 +1,6 @@
 package com.iruen.dao;
 
-import com.iruen.domain.CubeoneTest;
+import com.iruen.domain.CubeoneTestUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface CubeoneTestDao {
 
-    List<CubeoneTest> findAllUsers();
+    List<CubeoneTestUser> findAllUsers();
 }

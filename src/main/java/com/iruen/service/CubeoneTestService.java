@@ -1,6 +1,6 @@
 package com.iruen.service;
 
-import com.iruen.domain.CubeoneTest;
+import com.iruen.domain.CubeoneTestUser;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface CubeoneTestService {
 
-    List<CubeoneTest> findAllUsers();
+    List<CubeoneTestUser> findAllUsers();
 }
