@@ -22,6 +22,11 @@ public class CubeoneTestServiceImpl implements CubeoneTestService {
     }
 
     @Override
+    public List<CubeoneTestUser> findKey() {
+        return cubeoneTestDao.findKey();
+    }
+
+    @Override
     public CubeoneTestUser findUserByName(String name) {
         return cubeoneTestDao.findUserByName(name);
     }

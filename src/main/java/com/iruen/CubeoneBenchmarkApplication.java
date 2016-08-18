@@ -1,34 +1,29 @@
 package com.iruen;
 
-import com.iruen.domain.CubeoneBenchmark;
-import com.iruen.executor.task.CubeoneBenchmarkDataFindTask;
-import com.iruen.executor.task.CubeoneBenchmarkDataLoadTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.iruen.domain.CubeoneTestUser;
+import com.iruen.executor.task.FindFromOracleTask;
+import com.iruen.executor.task.FindFromRedisTask;
+import com.iruen.executor.task.LoadToRedisTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.StopWatch;
 
-import java.util.concurrent.Executor;
+import java.util.List;
 
 @SpringBootApplication
 public class CubeoneBenchmarkApplication implements CommandLineRunner {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private FindFromOracleTask findFromOracleTask;
+    @Autowired
+    private LoadToRedisTask loadToRedisTask;
+    @Autowired
+    private FindFromRedisTask findFromRedisTask;
 
     @Autowired
     private Properties properties;
-    @Autowired
-    private CubeoneBenchmarkDataLoadTask cubeoneDataLoadTask;
-    @Autowired
-    private CubeoneBenchmarkDataFindTask cubeoneDataFindTask;
-    @Autowired
-    private StopWatch stopWatch;
-
     private int workerCnt;
 
     public static void main(String[] args) {
@@ -37,40 +32,26 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        workerCnt = Integer.parseInt(properties.getWorkerCnt());
 
-        /**
-         * Data Load Task
-         */
-        CubeoneBenchmark cubeoneBenchmark = (CubeoneBenchmark) cubeoneDataLoadTask.call();
+        List<CubeoneTestUser> users = (List<CubeoneTestUser>) findFromOracleTask.call();
+        loadToRedisTask.setUsers(users);
+        findFromRedisTask.setUsers(users);
 
-        /**
-         * Data Load Task 이후 return 받은 객체 설정.
-         */
-        long loadDataTime = cubeoneBenchmark.getTime();
+        loadToRedisTask.run();
+        findFromRedisTask.run();
 
-        /**
-         * 멀티 스레드로 Data Find Task 실행.
-         */
-        Executor executor = getAsyncExecutor();
-        stopWatch.start();
-        for (int i = 0; i < workerCnt; i++) {
-            executor.execute(cubeoneDataFindTask);
-        }
-        stopWatch.stop();
-
-        /**
-         * 테스트 시간 출력
-         */
-        long totalTime = stopWatch.getTotalTimeMillis();
-        logger.info("Total Count: {}", cubeoneDataLoadTask.getUsers().size());
-        logger.info("Data Load Benchmark Time : {} mils.", loadDataTime);
-        logger.info("Find Data Benchmark Time : {} mils.", totalTime - loadDataTime);
-        logger.info("Total Benchmark Time : {} mils.", totalTime);
+//        ThreadPoolTaskExecutor loadToRedisTaskExecutor = getExecutorPool();
+//        ThreadPoolTaskExecutor findFromRedisTaskExecutor = getExecutorPool();
+//        workerCnt = Integer.parseInt(properties.getWorkerCnt());
+//
+//        for (int i = 0; i < workerCnt; i++)
+//            loadToRedisTaskExecutor.execute(loadToRedisTask);
+//        for (int i = 0; i < workerCnt; i++)
+//            findFromRedisTaskExecutor.execute(findFromRedisTask);
 
     }
 
-    public ThreadPoolTaskExecutor getAsyncExecutor() {
+    public ThreadPoolTaskExecutor getExecutorPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(10);
@@ -79,8 +60,5 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
         return executor;
     }
 
-    @Bean
-    public StopWatch stopWatch() {
-        return new StopWatch();
-    }
+
 }

@@ -6,11 +6,6 @@
 
 <mapper namespace="com.iruen.dao.CubeoneTestDao">
 
-    <insert id="signUpUser" parameterType="com.iruen.domain.CubeoneTestUser">
-        INSERT INTO test3 (email, password)
-        VALUES (#{email}, #{password})
-    </insert>
-
     <select id="dummyQuery" resultType="java.lang.String">
         SELECT 'ABCDEF12345' FROM DUAL;
     </select>
@@ -19,25 +14,12 @@
         SELECT * FROM test3
     </select>
 
+    <select id="findKey" resultType="com.iruen.domain.CubeoneTestUser">
+        SELECT * FROM test3 WHERE ROWNUM &lt; 1001
+    </select>
+
     <select id="findUserByName" parameterType="java.lang.String" resultType="com.iruen.domain.CubeoneTestUser">
         SELECT * FROM test3 WHERE name = #{name}
     </select>
-
-    <select id="findUserByEmail" resultType="com.iruen.domain.CubeoneTestUser" parameterType="java.lang.String">
-        SELECT * FROM test3
-        WHERE email = #{email}
-    </select>
-
-    <update id="updateUser" parameterType="com.iruen.domain.CubeoneTestUser">
-        UPDATE test3
-        SET email = #{email}
-        AND password = #{password}
-        WHERE email = #{email}
-    </update>
-
-    <delete id="deleteUserByEmail" parameterType="java.lang.String">
-        DELETE FROM test3
-        WHERE email = #{email}
-    </delete>
 
 </mapper>

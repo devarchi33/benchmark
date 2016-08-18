@@ -26,7 +26,7 @@ public class JedisService {
         }
     }
 
-    public Integer sendLog(String logKey, String logValue) throws JedisConnectionException {
+    public Integer pushLog(String logKey, String logValue) {
         long countLog;
         try (Jedis jedis = jedisConfig.getConnection()) {
             countLog = jedis.rpush(logKey, logValue);
@@ -34,7 +34,13 @@ public class JedisService {
         }
     }
 
-    public String getLog(byte[] logKey) {
+    public String popLog(String key) {
+        try (Jedis jedis = jedisConfig.getConnection()) {
+            return jedis.lpop(key);
+        }
+    }
+
+    public String popLog(byte[] logKey) {
         byte[] getLog;
         try (Jedis jedis = jedisConfig.getConnection()) {
             getLog = jedis.lpop(logKey);

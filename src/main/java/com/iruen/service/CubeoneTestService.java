@@ -11,5 +11,7 @@ public interface CubeoneTestService {
 
     List<CubeoneTestUser> findAllUsers();
 
+    List<CubeoneTestUser> findKey();
+
     CubeoneTestUser findUserByName(String name);
 }

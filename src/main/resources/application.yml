@@ -1,6 +1,6 @@
 dbType: oracle
 logPrint: false
-workerCnt: 1
+workerCnt: 5
 servers:
   mysql:
     driver: com.mysql.cj.jdbc.Driver
