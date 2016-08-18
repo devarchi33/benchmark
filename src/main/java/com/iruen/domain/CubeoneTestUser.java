@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias;
  * Created by donghoon on 2016. 8. 17..
  */
 @Data
-@Alias("test")
+@Alias("test3")
 public class CubeoneTestUser {
 
     private String name;

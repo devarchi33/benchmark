@@ -20,4 +20,9 @@ public class CubeoneTestServiceImpl implements CubeoneTestService {
     public List<CubeoneTestUser> findAllUsers() {
         return cubeoneTestDao.findAllUsers();
     }
+
+    @Override
+    public CubeoneTestUser findUserByName(String name) {
+        return cubeoneTestDao.findUserByName(name);
+    }
 }

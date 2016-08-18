@@ -19,6 +19,10 @@
         SELECT * FROM test3
     </select>
 
+    <select id="findUserByName" parameterType="java.lang.String" resultType="com.iruen.domain.CubeoneTestUser">
+        SELECT * FROM test3 WHERE name = #{name}
+    </select>
+
     <select id="findUserByEmail" resultType="com.iruen.domain.CubeoneTestUser" parameterType="java.lang.String">
         SELECT * FROM test3
         WHERE email = #{email}

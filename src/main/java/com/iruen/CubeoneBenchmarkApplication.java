@@ -1,9 +1,8 @@
 package com.iruen;
 
 import com.iruen.domain.CubeoneBenchmark;
-import com.iruen.domain.CubeoneTestUser;
-import com.iruen.executor.CubeoneBenchmarkDataFindTask;
-import com.iruen.executor.CubeoneBenchmarkDataLoadTask;
+import com.iruen.executor.task.CubeoneBenchmarkDataFindTask;
+import com.iruen.executor.task.CubeoneBenchmarkDataLoadTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StopWatch;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
@@ -44,15 +42,12 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
         /**
          * Data Load Task
          */
-//        CubeoneBenchmark cubeoneBenchmark = (CubeoneBenchmark) cubeoneDataLoadTask.call();
+        CubeoneBenchmark cubeoneBenchmark = (CubeoneBenchmark) cubeoneDataLoadTask.call();
 
         /**
          * Data Load Task 이후 return 받은 객체 설정.
          */
-//        List<CubeoneTestUser> users = cubeoneBenchmark.getUsers();
-//        long loadDataTime = cubeoneBenchmark.getTime();
-//        cubeoneDataFindTask.setUsers(users);
-//        cubeoneDataFindTask.setLoadDataTime(loadDataTime);
+        long loadDataTime = cubeoneBenchmark.getTime();
 
         /**
          * 멀티 스레드로 Data Find Task 실행.
@@ -68,16 +63,16 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
          * 테스트 시간 출력
          */
         long totalTime = stopWatch.getTotalTimeMillis();
-//        logger.info("Total Count: {}", users.size());
-//        logger.info("Data Load Benchmark Time : {} mils.", loadDataTime);
-//        logger.info("Find Data Benchmark Time : {} mils.", totalTime - loadDataTime);
+        logger.info("Total Count: {}", cubeoneDataLoadTask.getUsers().size());
+        logger.info("Data Load Benchmark Time : {} mils.", loadDataTime);
+        logger.info("Find Data Benchmark Time : {} mils.", totalTime - loadDataTime);
         logger.info("Total Benchmark Time : {} mils.", totalTime);
 
     }
 
     public ThreadPoolTaskExecutor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
+        executor.setCorePoolSize(1);
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(10);
         executor.initialize();

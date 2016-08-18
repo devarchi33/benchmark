@@ -1,10 +1,10 @@
-package com.iruen.executor;
+package com.iruen.executor.task;
 
-import com.iruen.Properties;
 import com.iruen.domain.CubeoneBenchmark;
 import com.iruen.domain.CubeoneTestUser;
 import com.iruen.service.CubeoneTestService;
 import com.iruen.service.JedisService;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,14 @@ public class CubeoneBenchmarkDataLoadTask implements Callable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private Properties properties;
-    @Autowired
     private CubeoneTestService cubeoneTestService;
     @Autowired
     private JedisService jedisService;
     @Autowired
     private StopWatch stopWatch;
+
+    @Getter
+    private List<CubeoneTestUser> users;
 
     @Override
     @Async
@@ -40,7 +41,7 @@ public class CubeoneBenchmarkDataLoadTask implements Callable {
          * Oracle 로 부터 데이터를 가져와서 Redis 에 load.
          */
         stopWatch.start();
-        List<CubeoneTestUser> users = cubeoneTestService.findAllUsers();
+        users = cubeoneTestService.findAllUsers();
         for (CubeoneTestUser user : users) {
             String key = user.getJumin();
             if (!(jedisService.existsKey(key)))

@@ -1,5 +1,5 @@
 dbType: oracle
-logPrint: true
+logPrint: false
 workerCnt: 1
 servers:
   mysql:

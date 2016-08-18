@@ -10,4 +10,6 @@ import java.util.List;
 public interface CubeoneTestService {
 
     List<CubeoneTestUser> findAllUsers();
+
+    CubeoneTestUser findUserByName(String name);
 }

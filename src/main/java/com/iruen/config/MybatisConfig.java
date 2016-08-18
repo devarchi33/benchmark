@@ -1,10 +1,8 @@
 package com.iruen.config;
 
 import com.iruen.Properties;
-import com.iruen.dao.UserDao;
-import com.iruen.domain.User;
-import com.iruen.service.UserService;
-import com.iruen.service.UserServiceImpl;
+import com.iruen.dao.CubeoneTestDao;
+import com.iruen.domain.CubeoneTestUser;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -105,7 +103,10 @@ public class MybatisConfig {
         sessionFactory.setDataSource(comboPooledDataSource());
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mybatis/*-mapper.xml"));
 
-        Class[] typeAliases = {User.class};
+        /**
+         * domain 객체에 alias 사용하기 위해 설정하기.
+         */
+        Class[] typeAliases = {CubeoneTestUser.class};
         sessionFactory.setTypeAliases(typeAliases);
 
         return sessionFactory.getObject();
@@ -114,15 +115,14 @@ public class MybatisConfig {
     @Bean
     public MapperFactoryBean mapperFactoryBean() throws Exception {
         MapperFactoryBean mapperFactoryBean = new MapperFactoryBean();
-        mapperFactoryBean.setMapperInterface(UserDao.class);
+
+        /**
+         * dao 인터페이스가 추가되면 설정하기.
+         */
+        mapperFactoryBean.setMapperInterface(CubeoneTestDao.class);
         mapperFactoryBean.setSqlSessionFactory(sqlSessionFactory());
 
         return mapperFactoryBean;
-    }
-
-    @Bean
-    public UserService userService() {
-        return new UserServiceImpl();
     }
 
 }

@@ -12,4 +12,6 @@ import java.util.List;
 public interface CubeoneTestDao {
 
     List<CubeoneTestUser> findAllUsers();
+
+    CubeoneTestUser findUserByName(String name);
 }
