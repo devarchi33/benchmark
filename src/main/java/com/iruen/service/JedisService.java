@@ -12,10 +12,12 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 @Component
 public class JedisService {
     private JedisConfig jedisConfig;
+    private Jedis jedis;
 
     @Autowired
     public JedisService(JedisConfig jedisHelper) {
         this.jedisConfig = jedisHelper;
+        this.jedis = jedisConfig.getConnection();
     }
 
     public Integer sendLog(byte[] logKey, byte[] logValue) {
@@ -55,9 +57,7 @@ public class JedisService {
     }
 
     public String getLog(String key) {
-        try (Jedis jedis = jedisConfig.getConnection()) {
-            return jedis.get(key);
-        }
+        return jedis.get(key);
     }
 
     public boolean existsKey(String key) {
