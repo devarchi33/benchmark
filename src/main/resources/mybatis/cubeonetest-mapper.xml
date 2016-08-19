@@ -11,7 +11,7 @@
     </select>
 
     <select id="findAllUsers" resultType="com.iruen.domain.CubeoneTestUser">
-        SELECT * FROM test3
+        SELECT * FROM test3 WHERE ROWNUM &lt; 10001
     </select>
 
     <select id="findKey" resultType="com.iruen.domain.CubeoneTestUser">

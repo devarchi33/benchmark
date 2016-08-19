@@ -4,7 +4,10 @@ import com.iruen.domain.CubeoneTestUser;
 import com.iruen.executor.task.FindFromOracleTask;
 import com.iruen.executor.task.FindFromRedisTask;
 import com.iruen.executor.task.LoadToRedisTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +18,8 @@ import java.util.List;
 @SpringBootApplication
 public class CubeoneBenchmarkApplication implements CommandLineRunner {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private FindFromOracleTask findFromOracleTask;
     @Autowired
@@ -22,8 +27,7 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
     @Autowired
     private FindFromRedisTask findFromRedisTask;
 
-    @Autowired
-    private Properties properties;
+    @Value("${workerCnt:1}")
     private int workerCnt;
 
     public static void main(String[] args) {
@@ -32,6 +36,8 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+
+        logger.info("Worker Count: {}", workerCnt);
 
         List<CubeoneTestUser> users = (List<CubeoneTestUser>) findFromOracleTask.call();
         loadToRedisTask.setUsers(users);
@@ -42,7 +48,6 @@ public class CubeoneBenchmarkApplication implements CommandLineRunner {
 
 //        ThreadPoolTaskExecutor loadToRedisTaskExecutor = getExecutorPool();
 //        ThreadPoolTaskExecutor findFromRedisTaskExecutor = getExecutorPool();
-//        workerCnt = Integer.parseInt(properties.getWorkerCnt());
 //
 //        for (int i = 0; i < workerCnt; i++)
 //            loadToRedisTaskExecutor.execute(loadToRedisTask);

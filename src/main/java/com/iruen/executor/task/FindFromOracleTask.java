@@ -6,6 +6,8 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.concurrent.Callable;
  * Created by donghoon on 2016. 8. 17..
  */
 @Component
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class FindFromOracleTask implements Callable {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -31,12 +34,8 @@ public class FindFromOracleTask implements Callable {
     @Override
     public Object call() {
 
-        long startTime = System.currentTimeMillis();
         usersKey = cubeoneTestService.findKey();
-        long endTime = System.currentTimeMillis();
-        long elapsedTime = endTime - startTime;
         logger.info("Total User Key Count: {}", usersKey.size());
-        logger.info("Find Key from Oracle Time: {}", elapsedTime);
 
         return usersKey;
     }

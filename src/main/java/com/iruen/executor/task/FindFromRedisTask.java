@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
  * Created by donghoon on 2016. 8. 17..
  */
 @Component
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class FindFromRedisTask implements Runnable {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -41,7 +44,6 @@ public class FindFromRedisTask implements Runnable {
 
         List<CubeoneTestUser> users = cubeoneTestService.findAllUsers();
 
-        long startTime = System.currentTimeMillis();
         for (CubeoneTestUser user : users) {
             String findVal = jedisService.getLog(user.getJumin());
 
@@ -49,9 +51,6 @@ public class FindFromRedisTask implements Runnable {
                 logger.info("Found Val[" + user.getName() + "]: {}", findVal);
             }
         }
-        long endTime = System.currentTimeMillis();
-        long elapsedTime = endTime - startTime;
-        logger.info("Find data from Redis Time: {}", elapsedTime);
 
     }
 }
