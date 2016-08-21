@@ -14,8 +14,8 @@ public class JedisService {
     private JedisConfig jedisConfig;
 
     @Autowired
-    public JedisService(JedisConfig jedisHelper) {
-        this.jedisConfig = jedisHelper;
+    public JedisService(JedisConfig jedisConfig) {
+        this.jedisConfig = jedisConfig;
     }
 
     public Integer sendLog(byte[] logKey, byte[] logValue) {
